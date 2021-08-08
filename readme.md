@@ -19,47 +19,49 @@ WAAVI is a web development studio based in Madrid, Spain. You can learn more abo
 - [Features overview](#features-overview)
 - [Installation](#installation)
 - [Set source for translations](#translations-source)
-  - [Load translations from files](#load-translations-from-files)
-  - [Load translations from the database](#load-translations-from-the-database)
-  - [Mixed mode](#mixed-mode)
-  - [Loading your files into the database](#loading-your-files-into-the-database)
+	- [Load translations from files](#load-translations-from-files)
+	- [Load translations from the database](#load-translations-from-the-database)
+	- [Mixed mode](#mixed-mode)
+	- [Loading your files into the database](#loading-your-files-into-the-database)
 - [Cache translations](#cache-translations)
 - [Managing languages and translations in the Database](#managing-languages-and-translations-in-the-database)
-  - [Managing Languages](#managing-languages)
-  - [Managing Translations](#managing-translations)
+	- [Managing Languages](#managing-languages)
+	- [Managing Translations](#managing-translations)
 - [Model attributes translation](#model-attributes-translation)
 - [Uri localization](#uri-localization)
 
 ## Laravel compatibility
 
- Laravel  | translation
+Laravel  | translation
 :---------|:----------
- 4.x  	  | 1.0.x
- 5.0.x    | 2.0.x
- 5.1.x\|5.3.x | 2.1.x
- 5.4.x    | 2.2.x
- 5.5.x    | 2.3.x and higher
- 5.6.x    | 2.3.x and higher
- 6.x\|7.x     | 2.4.x and higher
+4.x  	  | 1.0.x
+5.0.x    | 2.0.x
+5.1.x\|5.3.x | 2.1.x
+5.4.x    | 2.2.x
+5.5.x    | 2.3.x and higher
+5.6.x    | 2.3.x and higher
+6.x\|7.x     | 2.4.x and higher
+8.x.x    | 2.5.x and higher
+
 ## Features overview
 
- - Allow dynamic changes to the site's text and translations.
- - Cache your localization entries.
- - Load your translation files into the database.
- - Force your urls to be localized (ex: /home -> /es/home) and set the locale automatically through the browser's config.
- - Localize your model attributes.
+- Allow dynamic changes to the site's text and translations.
+- Cache your localization entries.
+- Load your translation files into the database.
+- Force your urls to be localized (ex: /home -> /es/home) and set the locale automatically through the browser's config.
+- Localize your model attributes.
 
 ## Installation
 
 Require through composer
 
 
-	composer require waavi/translation 2.3.x
+	composer require waavi/translation 2.5.x
 
 Or manually edit your composer.json file:
 
 	"require": {
-		"waavi/translation": "2.3.x"
+		"waavi/translation": "2.5.x"
 	}
 
 Once installed, in your project's config/app.php file replace the following entry from the providers array:
@@ -90,10 +92,10 @@ You may check the package's configuration file at:
 
 This package allows you to load translation from the regular Laravel localization files (in /resources/lang), from the database, from cache or in a mix of the previous for development. You may configure the desired mode of operation through the translator.php config file and/or the TRANSLATION_SOURCE environment variable. Accepted values are:
 
- - 'files'		To load translations from Laravel's language files (default)
- - 'database'	To load translations from the database
- - 'mixed'		To load translations both from the filesystem and the database, with the filesystem having priority.
- - 'mixed_db'   To load translations both from the filesystem and the database, with the database having priority. [v2.1.5.3]
+- 'files'		To load translations from Laravel's language files (default)
+- 'database'	To load translations from the database
+- 'mixed'		To load translations both from the filesystem and the database, with the filesystem having priority.
+- 'mixed_db'   To load translations both from the filesystem and the database, with the database having priority. [v2.1.5.3]
 
 NOTE: When adding the package to an existing Laravel project, 'files' must be used until migrations have been executed.
 
@@ -181,7 +183,7 @@ When using either the database or mixed translation sources, you will need to fi
 * Add your languages of choice to the database (see [Managing Database Languages](#managing-database-languages))
 * Load your language files into the database using the provided Artisan command:
 
-	` php artisan translator:load `
+  ` php artisan translator:load `
 
 When executing the artisan command, the following will happen:
 
@@ -201,11 +203,11 @@ Since querying the database everytime a language group must be loaded is grossly
 
 You may enable or disable the cache through the translator.php config file or the 'TRANSLATION_CACHE_ENABLED' environment variable. Config options are:
 
- Env key  | type	|description
+Env key  | type	|description
 :---------|:--------|:-----------
- TRANSLATION_CACHE_ENABLED 	| boolean| Enable / disable the translations cache
- TRANSLATION_CACHE_TIMEOUT  | integer| Minutes translation items should be kept in the cache.
- TRANSLATION_CACHE_SUFFIX   | string | Default is 'translation'. This will be the cache suffix applied to all translation cache entries.
+TRANSLATION_CACHE_ENABLED 	| boolean| Enable / disable the translations cache
+TRANSLATION_CACHE_TIMEOUT  | integer| Minutes translation items should be kept in the cache.
+TRANSLATION_CACHE_SUFFIX   | string | Default is 'translation'. This will be the cache suffix applied to all translation cache entries.
 
 ### Cache tags
 
@@ -253,7 +255,7 @@ The recommended way of managing both languages and translations is through the p
 
 Both the Language and the Translation repositories provide the following methods:
 
- Method   | Description
+Method   | Description
 :---------|:--------
 hasTable();									| Returns true if the corresponding table exists in the database, false otherwise
 all($related = [], $perPage = 0); 			| Retrieve all records from the DB. A paginated record will be return if the second argument is > 0, with $perPage items returned per page
@@ -273,7 +275,7 @@ A valid Language record requires both its name and locale to be unique. It is re
 
 The provided methods are:
 
- Method   | Description
+Method   | Description
 :---------|:--------
 update(array $attributes);				| Updates a Language entry [id, name, locale]
 trashed($related = [], $perPage = 0);	| Retrieve all trashed records from the DB.
@@ -294,7 +296,7 @@ A valid translation entry cannot have the same locale and language code than ano
 
 The provided methods are:
 
- Method   | Description
+Method   | Description
 :---------|:--------
 update($id, $text);									| Update an unlocked entry
 updateAndLock($id, $text);							| Update and lock an entry (locked or not)
@@ -308,18 +310,18 @@ flagAsReviewed($id);								| Flag entry as reviewed
 
 Things to consider:
 
- - You may lock translations so that they can only be updated through updateAndLock. The language file loader uses the update method and will not be able to override locked translations.
- - When a text entry belonging to the default locale is updated, all of its siblings are marked as pending review.
- - When deleting an entry, if it belongs to the default locale its translations will also be deleted.
+- You may lock translations so that they can only be updated through updateAndLock. The language file loader uses the update method and will not be able to override locked translations.
+- When a text entry belonging to the default locale is updated, all of its siblings are marked as pending review.
+- When deleting an entry, if it belongs to the default locale its translations will also be deleted.
 
 ## Model attributes translation
 
 You can also use the translation management system to manage your model attributes translations. To do this, you only need to:
 
- - Make sure either the database or mixed source are set.
- - Make sure your models use the Waavi\Translation\Translatable\Trait
- - In your model, add a translatableAttributes array with the names of the attributes you wish to be available for translation.
- - For every field you wish to translate, make sure there is a corresponding attributeName_translation field in your database.
+- Make sure either the database or mixed source are set.
+- Make sure your models use the Waavi\Translation\Translatable\Trait
+- In your model, add a translatableAttributes array with the names of the attributes you wish to be available for translation.
+- For every field you wish to translate, make sure there is a corresponding attributeName_translation field in your database.
 
 Example:
 ```php
@@ -346,18 +348,18 @@ You may use Waavi\Translation\Middleware\TranslationMiddleware to make sure all 
 
 For example, if a user visits the url /home, the following would happen:
 
- - The middleware will check if a locale is present.
- - If a valid locale is present:
- 	- it will globally set the language for that locale
- 	- the following data will be available in your views:
- 		- currentLanguage: current selected Language instance.
- 		- selectableLanguages: list of all languages the visitor can switch to (except the current one)
- 		- altLocalizedUrls: a list of all localized urls for the current resource except this one, formatted as ['locale' => 'en', 'name' => 'English', 'url' => '/en/home']
- - If no locale is present:
- 	- Check the first two letters of the brower's accepted locale HTTP_ACCEPT_LANGUAGE (for example 'en-us' => 'en')
- 	- If this is a valid locale, redirect the visitor to that locale => /es/home
- 	- If not, redirect to default locale => /en/home
- 	- Redirects will keep input data in the url, if any
+- The middleware will check if a locale is present.
+- If a valid locale is present:
+	- it will globally set the language for that locale
+	- the following data will be available in your views:
+		- currentLanguage: current selected Language instance.
+		- selectableLanguages: list of all languages the visitor can switch to (except the current one)
+		- altLocalizedUrls: a list of all localized urls for the current resource except this one, formatted as ['locale' => 'en', 'name' => 'English', 'url' => '/en/home']
+- If no locale is present:
+	- Check the first two letters of the brower's accepted locale HTTP_ACCEPT_LANGUAGE (for example 'en-us' => 'en')
+	- If this is a valid locale, redirect the visitor to that locale => /es/home
+	- If not, redirect to default locale => /en/home
+	- Redirects will keep input data in the url, if any
 
 You may choose to activate this Middleware globally by adding the middleware to your App\Http\Kernel file:
 ```php
