@@ -33,6 +33,11 @@ class TranslationRepository extends Repository
      *  @var \Illuminate\Support\MessageBag
      */
     protected $errors;
+    private $defaultLocale;
+    /**
+     * @var Application
+     */
+    private $app;
 
     /**
      *  Constructor

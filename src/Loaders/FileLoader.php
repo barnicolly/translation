@@ -18,6 +18,7 @@ class FileLoader extends Loader
      */
     protected $laravelFileLoader;
 
+    protected $hints = [];
     /**
      *  Create a new mixed loader instance.
      *

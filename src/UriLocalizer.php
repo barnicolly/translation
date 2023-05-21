@@ -7,6 +7,15 @@ use Waavi\Translation\Repositories\LanguageRepository;
 class UriLocalizer
 {
     /**
+     * @var Request
+     */
+    private $request;
+    /**
+     * @var array|string
+     */
+    private $availableLocales;
+
+    /**
      * @param LanguageRepository $languageRepository
      * @param Request $request
      */
